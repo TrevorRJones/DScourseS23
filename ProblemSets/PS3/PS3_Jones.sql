@@ -1,103 +1,40 @@
-0,"“policyID”",INTEGER,0,,0
-1,"“statecode”",CHAR,0,,0
-2,"“county”",CHAR,0,,0
-3,"“eq_site_limit”",INTEGER,0,,0
-4,"“hu_site_limit”",INTEGER,0,,0
-5,"“fl_site_limit”",INTEGER,0,,0
-6,"“fr_site_limit”",INTEGER,0,,0
-7,"“tiv_2011”",INTEGER,0,,0
-8,"“tiv_2012”",INTEGER,0,,0
-9,"“eq_site_deductible”",INTEGER,0,,0
-10,"“hu_site_deductible”",INTEGER,0,,0
-11,"“fl_site_deductible”",INTEGER,0,,0
-12,"“fr_site_deductible”",INTEGER,0,,0
-13,"“point_latitude”",INTEGER,0,,0
-14,"“point_longitude”",INTEGER,0,,0
-15,"“line”",CHAR,0,,0
-16,"“construction”",CHAR,0,,0
-17,"“point_granularity”",INTEGER,0,,0
-policyID,statecode,county,eq_site_limit,hu_site_limit,fl_site_limit,fr_site_limit,tiv_2011,tiv_2012,eq_site_deductible,hu_site_deductible,fl_site_deductible,fr_site_deductible,point_latitude,point_longitude,line,construction,point_granularity
-119736,FL,"CLAY COUNTY",498960,498960,498960,498960,498960,792148.9,0,9979.2,0,0,30.102261,-81.711777,Residential,Masonry,1
-448094,FL,"CLAY COUNTY",1322376.3,1322376.3,1322376.3,1322376.3,1322376.3,1438163.57,0,0,0,0,30.063936,-81.707664,Residential,Masonry,3
-206893,FL,"CLAY COUNTY",190724.4,190724.4,190724.4,190724.4,190724.4,192476.78,0,0,0,0,30.089579,-81.700455,Residential,Wood,1
-333743,FL,"CLAY COUNTY",0,79520.76,0,0,79520.76,86854.48,0,0,0,0,30.063236,-81.707703,Residential,Wood,3
-172534,FL,"CLAY COUNTY",0,254281.5,0,254281.5,254281.5,246144.49,0,0,0,0,30.060614,-81.702675,Residential,Wood,1
-785275,FL,"CLAY COUNTY",0,515035.62,0,0,515035.62,884419.17,0,0,0,0,30.063236,-81.707703,Residential,Masonry,3
-995932,FL,"CLAY COUNTY",0,19260000,0,0,19260000,20610000,0,0,0,0,30.102226,-81.713882,Commercial,"Reinforced Concrete",1
-223488,FL,"CLAY COUNTY",328500,328500,328500,328500,328500,348374.25,0,16425,0,0,30.102217,-81.707146,Residential,Wood,1
-433512,FL,"CLAY COUNTY",315000,315000,315000,315000,315000,265821.57,0,15750,0,0,30.118774,-81.704613,Residential,Wood,1
-county
-"CLAY COUNTY"
-"SUWANNEE COUNTY"
-"NASSAU COUNTY"
-"COLUMBIA COUNTY"
-"ST  JOHNS COUNTY"
-"BAKER COUNTY"
-"BRADFORD COUNTY"
-"HAMILTON COUNTY"
-"UNION COUNTY"
-"MADISON COUNTY"
-"LAFAYETTE COUNTY"
-"FLAGLER COUNTY"
-"DUVAL COUNTY"
-"LAKE COUNTY"
-"VOLUSIA COUNTY"
-"PUTNAM COUNTY"
-"MARION COUNTY"
-"SUMTER COUNTY"
-"LEON COUNTY"
-"FRANKLIN COUNTY"
-"LIBERTY COUNTY"
-"GADSDEN COUNTY"
-"WAKULLA COUNTY"
-"JEFFERSON COUNTY"
-"TAYLOR COUNTY"
-"BAY COUNTY"
-"WALTON COUNTY"
-"JACKSON COUNTY"
-"CALHOUN COUNTY"
-"HOLMES COUNTY"
-"WASHINGTON COUNTY"
-"GULF COUNTY"
-"ESCAMBIA COUNTY"
-"SANTA ROSA COUNTY"
-"OKALOOSA COUNTY"
-"ALACHUA COUNTY"
-"GILCHRIST COUNTY"
-"LEVY COUNTY"
-"DIXIE COUNTY"
-"SEMINOLE COUNTY"
-"ORANGE COUNTY"
-"BREVARD COUNTY"
-"INDIAN RIVER COUNTY"
-"MIAMI DADE COUNTY"
-"BROWARD COUNTY"
-"MONROE COUNTY"
-"PALM BEACH COUNTY"
-"MARTIN COUNTY"
-"HENDRY COUNTY"
-"PASCO COUNTY"
-"GLADES COUNTY"
-"HILLSBOROUGH COUNTY"
-"HERNANDO COUNTY"
-"PINELLAS COUNTY"
-"POLK COUNTY"
-"North Fort Myers"
-Orlando
-"HIGHLANDS COUNTY"
-"HARDEE COUNTY"
-"MANATEE COUNTY"
-"OSCEOLA COUNTY"
-"LEE COUNTY"
-"CHARLOTTE COUNTY"
-"COLLIER COUNTY"
-"SARASOTA COUNTY"
-"DESOTO COUNTY"
-"CITRUS COUNTY"
-398118.229567353
-Masonry,9257
-"Reinforced Concrete",1299
-"Reinforced Masonry",4225
-"Steel Frame",272
-Wood,21581
-construction,1
+-- Create a table to store the data
+CREATE TABLE florida_insurance (
+	policyID INTEGER,
+	statecode TEXT,
+	county TEXT,
+	eq_site_limit REAL,
+	hu_site_limit REAL,
+	fl_site_limit REAL,
+	fr_site_limit REAL,
+	tiv_2011 REAL,
+	tiv_2012 REAL,
+	eq_site_deductible REAL,
+	hu_site_deductible REAL,
+	fl_site_deductible REAL,
+	fr_site_deductible REAL,
+	point_latitude REAL,
+	point_longitude REAL,
+	line TEXT,
+	construction TEXT,
+	point_granularity INTEGER
+);
+
+-- Import the data from the CSV file into the table
+.mode csv
+.import FL_insurance_sample.csv florida_insurance
+
+-- Print out the first 10 rows of the data set
+SELECT * FROM florida_insurance LIMIT 10;
+
+-- List which counties are in the sample (i.e. list unique values of the county variable)
+SELECT DISTINCT county FROM florida_insurance;
+
+-- Compute the average property appreciation from 2011 to 2012 (i.e. compute the mean of tiv_2012 - tiv_2011)
+SELECT AVG(tiv_2012 - tiv_2011) FROM florida_insurance;
+
+-- Create a frequency table of the construction variable to see what fraction of buildings are made out of wood or some other material
+SELECT construction, COUNT(*) AS frequency
+FROM florida_insurance
+GROUP BY construction;
+
