@@ -1,4 +1,4 @@
-#!/bin/sh.
+#!/bin/sh
 
 wget http://spatialkeydocs.s3.amazonaws.com/FL_insurance_sample.csv.zip
 unzip FL_insurance_sample.csv.zip
