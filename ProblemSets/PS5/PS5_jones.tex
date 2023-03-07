@@ -1,0 +1,31 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+\title{Problem Set 5}
+\author{Trevor Jones}
+
+
+\begin{document}
+\maketitle
+
+\section{Questions}
+\begin{enumerate}
+    \item In a new TeX file , tell me about the data. What about it interests you? Will it be useful to you at some point in the future? Did you use any online tutorials to help you parse the data? If so, which ones?
+    \begin{enumerate}
+        \item I did a project in the past with a similar data source, and I am still interested to apply my new skills to see if I can make the leg work on it easier. It could certainly be useful to me in the future, but I was really just interested to see if I could get it to work. I did not use any online resources to get this data, just in class notes. My only issue with this data set is that I keep getting an error 404 when I expand the dataset within the website and then try to scrape it. 
+    \end{enumerate}
+    \item In another section of the same TeX file as referenced in the previous question, tell me about what you found in the data (if anything) that was interesting or useful to you. What packages did you use (if any)?
+    \begin{enumerate}
+        \item Using an API, I accessed Ford stock data from yahoo finance. I wanted to look at the strategy of "overnight" investing where you buy a stock at close and sell it at open the next day. I've heard of some papers that have come out in the last few years, so I was curious to look at some of the data myself. In the case of Ford, the mean return on this would be negative, but its still a question worth looking into. To do this, I used the quantmod package and mutated a variable within the dataset to create a variable showing this overnight return. 
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{document}
