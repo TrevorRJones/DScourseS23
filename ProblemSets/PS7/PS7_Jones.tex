@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+\title{Problem Set 7}
+\author{Trevor Jones}
+
+\begin{document}
+\maketitle
+
+\section{Questions}
+\begin{enumerate}
+    \item Tell me about the progress you’ve made on your project. What data are you using? What kinds of modeling approaches do you think you’re going to take?
+    \begin{enumerate}
+        \item I'm not entirely sure where I'm going with this project, but right now I'm investigating NFL performance data and am looking into how/if various college performance data metrics show a relationship with overall NFL performance. In a way, this is a continuation of my investigation into QB Hand size I did in econometrics. I'm not sure this will be my final topic, but I've done some good work with the data so far.  
+    \end{enumerate}
+\end{enumerate}
+\pagebreak
+
+
+% Data Summary Statistics
+\begin{table}
+\centering
+\begin{tabular}[t]{lrrrrrrr}
+\toprule
+  & Unique (\#) & Missing (\%) & Mean & SD & Min & Median & Max\\
+\midrule
+logwage & 670 & 25 & \num{1.6} & \num{0.4} & \num{0.0} & \num{1.7} & \num{2.3}\\
+hgc & 16 & 0 & \num{13.1} & \num{2.5} & \num{0.0} & \num{12.0} & \num{18.0}\\
+tenure & 259 & 0 & \num{6.0} & \num{5.5} & \num{0.0} & \num{3.8} & \num{25.9}\\
+age & 13 & 0 & \num{39.2} & \num{3.1} & \num{34.0} & \num{39.0} & \num{46.0}\\
+tenure\_sq & 259 & 0 & \num{66.0} & \num{102.5} & \num{0.0} & \num{14.1} & \num{671.7}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Model Summary Statistics
+\begin{table}
+\centering
+\begin{tabular}[t]{lcccc}
+\toprule
+  & Model 1 & Model 2 & Model 3 & Model 4\\
+\midrule
+(Intercept) & \num{0.639}*** & \num{0.833}*** & \num{0.639}*** & \num{0.793}***\\
+ & (\num{0.146}) & (\num{0.115}) & (\num{0.111}) & (\num{0.150})\\
+hgc & \num{0.062}*** & \num{0.049}*** & \num{0.062}*** & \num{0.056}***\\
+ & (\num{0.005}) & (\num{0.004}) & (\num{0.004}) & (\num{0.006})\\
+collegenot college grad & \num{0.146}*** & \num{0.160}*** & \num{0.146}*** & \num{0.092}*\\
+ & (\num{0.035}) & (\num{0.026}) & (\num{0.025}) & (\num{0.036})\\
+tenure & \num{0.023}*** & \num{0.015}*** & \num{0.023}*** & \num{0.023}***\\
+ & (\num{0.002}) & (\num{0.001}) & (\num{0.001}) & (\num{0.001})\\
+age & \num{-0.001} & \num{-0.001} & \num{-0.001} & \num{-0.002}\\
+ & (\num{0.003}) & (\num{0.002}) & (\num{0.002}) & (\num{0.003})\\
+marriedsingle & \num{-0.024} & \num{-0.029}* & \num{-0.024}+ & \num{-0.022}\\
+ & (\num{0.018}) & (\num{0.014}) & (\num{0.013}) & (\num{0.016})\\
+\midrule
+Num.Obs. & \num{1669} & \num{2229} & \num{2229} & \\
+R2 & \num{0.195} & \num{0.132} & \num{0.268} & \\
+R2 Adj. & \num{0.192} & \num{0.130} & \num{0.266} & \\
+AIC & \num{1206.1} & \num{1129.3} & \num{961.2} & \\
+BIC & \num{1244.0} & \num{1169.3} & \num{1001.1} & \\
+Log.Lik. & \num{-596.049} & \num{-557.651} & \num{-473.584} & \\
+F & \num{80.508} & \num{67.496} & \num{162.884} & \\
+RMSE & \num{0.35} & \num{0.31} & \num{0.30} & \\
+\bottomrule
+\multicolumn{5}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\end{document}
+
