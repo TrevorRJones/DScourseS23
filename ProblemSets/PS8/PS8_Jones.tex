@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+\title{Problem Set 8}
+\author{Trevor Jones}
+
+\begin{document}
+\maketitle
+
+\section{Questions}
+\begin{enumerate}
+    \item Use modelsummary to export the regression output to a .tex file. In your .tex file, tell me about how similar your estimates of ˆβ are to the “ground truth” β that you used to create the data in (1)
+    \begin{enumerate}
+        \item In comparison to the final regression that is on the next page, the optimal value of controls for each equation (that I got to work) were nearly the exact same as the "ground truth." The only estimation here I struggled with was using MLE / L-BFGS, I will continue to investigate this to see what exactly went wrong and how I can fix it moving forward. 
+    \end{enumerate}
+\end{enumerate}
+\pagebreak
+
+% Data Summary Statistics
+\begin{table}
+\centering
+\begin{tabular}[t]{lc}
+\toprule
+  & Model 1\\
+\midrule
+X1 & \num{1.501}\\
+ & \vphantom{9} (\num{0.002})\\
+X2 & \num{-0.996}\\
+ & \vphantom{8} (\num{0.002})\\
+X3 & \num{-0.249}\\
+ & \vphantom{7} (\num{0.002})\\
+X4 & \num{0.747}\\
+ & \vphantom{6} (\num{0.002})\\
+X5 & \num{3.502}\\
+ & \vphantom{5} (\num{0.002})\\
+X6 & \num{-1.999}\\
+ & \vphantom{4} (\num{0.002})\\
+X7 & \num{0.501}\\
+ & \vphantom{3} (\num{0.002})\\
+X8 & \num{0.999}\\
+ & \vphantom{2} (\num{0.002})\\
+X9 & \num{1.253}\\
+ & \vphantom{1} (\num{0.002})\\
+X10 & \num{1.999}\\
+ & (\num{0.002})\\
+\midrule
+Num.Obs. & \num{100000}\\
+R2 & \num{0.991}\\
+R2 Adj. & \num{0.991}\\
+AIC & \num{144993.2}\\
+BIC & \num{145097.9}\\
+Log.Lik. & \num{-72485.615}\\
+RMSE & \num{0.50}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
+
