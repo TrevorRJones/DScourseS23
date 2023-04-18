@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+\title{Problem Set 10}
+\author{Trevor Jones}
+
+\begin{document}
+\maketitle
+
+\section{Questions}
+\begin{enumerate}
+    \item As a table in your .tex file, report the optimal values of the tuning parameters for each of the algorithms. How does each algorithm’s out-of-sample performance compare with each of the other algorithms?
+    \begin{enumerate}
+        \item Was able to fully run the code for 4/5 of the models, due to time constraints I was unable to get the results for SVM. Will go through the results below. 
+        \item The performance of all three models are similar, as they range from .84-.87 with the tree model performing the best out-of-sample with an estimate of .87. 
+    \end{enumerate}
+\end{enumerate}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+    penalty & .estimate & alg & cost\_complexity & tree\_depth & min\_n & hidden\_units & neighbors \\
+    \hline
+    0.00 & 0.85 & logit & & & & & \\
+    & 0.87 & tree & 0.00 & 15.00 & 10.00 & & \\
+    1.00 & 0.84 & nnet & & & & 4.00 & \\
+    & 0.84 & knn & & & & & 29.00 \\
+    \hline
+  \end{tabular}
+  \caption{Example table with parameter values and model performance.}
+  \label{tab:example_table}
+\end{table}
+
+
+\pagebreak
+
+
+\end{document}
+
