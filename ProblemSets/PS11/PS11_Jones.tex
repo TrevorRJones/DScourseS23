@@ -1,0 +1,277 @@
+\documentclass[12pt,english]{article}
+\usepackage{mathptmx}
+
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{darkblue}{RGB}{0.,0.,139.}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lipsum}
+\usepackage{siunitx}
+
+\usepackage[authoryear]{natbib}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[flushleft]{threeparttable}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{pdflscape}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0},backref=false,
+ colorlinks,citecolor=black,filecolor=black,
+ linkcolor=black,urlcolor=black]
+ {hyperref}
+\usepackage[all]{hypcap} % Links point to top of image, builds on hyperref
+\usepackage{breakurl}    % Allows urls to wrap, including hyperref
+
+\linespread{2}
+
+\begin{document}
+
+\begin{singlespace}
+\title{An Examination of the National Football League Combine Statistics and Draft Stock - Draft}
+\end{singlespace}
+
+
+\author{Trevor R. Jones\thanks{Department of Economics, University of Oklahoma.\
+E-mail~address:~\href{mailto:trevorjones@ou.edu}{trevorjones@ou.edu}}}
+
+% \date{\today}
+\date{May 9, 2020}
+
+\maketitle
+
+\begin{abstract}
+\begin{singlespace}
+This paper will examine the impact of measurements taken at the NFL combine on individual athletes’ potential draft stock, specifically focusing on the round and overall pick based on each position subgroup. To do this, two approaches are applied. The first is a robust linear regression that predicts draft stock with a player’s age, weight, height, 40-yard dash time, 3-cone drill time, 20-yard shuttle time, vertical jump height, and broad jump distance. In the second model, I created a tree model with the regression listed above with the goal of predicting an athlete’s draft stock. Results in Progress…
+\end{singlespace}
+
+\end{abstract}
+\vfill{}
+
+
+\pagebreak{}
+
+
+\section{Introduction}\label{sec:intro}
+Following their final college football season, concluding sometime between December and January, prospective professional players trade their shoulder pads and a helmet for shorts and a t-shirt to train for the National Football League combine, with the goal of outperforming other prospects at their position. If players receive an invite to the NFL Combine, they spend several days undergoing a series of physical tests, drills, and measurements in pair with interviews with the staff of interested football clubs. 
+
+These physical tests and measurements receive a plethora of media attention, as many players climb up or fall down the draft boards of teams and sports analysts alike based on their performance. Some players choose to opt out of individual tests, but the vast majority of athletes participate, hoping to increase their stock and signing bonus come draft day. The physical tests include two speed-based tests in the 40-yard dash and a 20-yard shuttle, an agility-focused test in the 3-cone drill, two “explosive” measurements in the vertical and broad jump, and one strength-based test in the number of repetitions on the bench press with 225 pounds. Further, teams also receive official measurements of the player's height, weight, wingspan, and hand size. Athletes also undergo a series of position-specific drills, but these are more qualitatively measured than quantitatively, so they are left out of this analysis. 
+
+\section{Literature Review}\label{sec:litreview}
+1. The National Football League (NFL) Combine: Does Normalized Data Better Predict Performance in the NFL Draft (2010)
+    \begin{itemize}
+    \item Used data between 2005-2009 for 8 combined physical tests, only from players drafted
+    \item Major finding: draft performance has little to do with draft success, as only straight sprints and jumping ability have any major success
+    \item Suggests the NFL alter the combine toward measurements that are more important to teams and incorporate mental and technical skills into the combine
+    \end{itemize}
+2. The National Football League Combine: A Reliable Predictor of Draft Status? (2003)
+    \begin{itemize}
+    \item Data from the 2000 NFL Combine for 9 performance tests
+    \item Findings: combine can be used to accurately predict draft status of RB, WR, and DBs.
+    \end{itemize}
+3. The National Football League Combine: Performance Differences Between Drafted and Nondrafted - Players Entering the 2004 and 2005 Drafts (2008)
+    \begin{itemize}
+    \item Data from 2004 and 2005 combines, divided players into skill players, big skill players, and linemen
+    \item Skill position Drafted players outperformed undrafted players in the 40-yard dash, vertical jump, 3-cone,
+    \item Linemen: drafted outperformed undrafted in the 40-yd dash, bench press, and 3-cone drill
+    \end{itemize}
+4. Does the NFL Combine Really Matter (2006)
+    \begin{itemize}
+    \item Looks at data for QB, WR, and RB from 2000 to 2010
+    \item Finds outstanding performance at the NFL Combine is not sufficient to guarantee one’s success as a professional player
+    \end{itemize}
+5. The NFL Combine as a Predictor of ON-Field Success (2017)
+    \begin{itemize}
+    \item A number of combined measures were statistically significantly associated with improved on-field NFL performance
+    \item quarterbacks and running backs with faster forty-yard dash speeds were associated with better NFL rushing statistics
+    \end{itemize}
+
+
+
+\section{Data}\label{sec:data}
+The data in this project comes from official NFL combine statistics and the official NFL draft results between 2002 and 2022. The data for this project comes from the nflreadr package, specifically from its combine and draft picks library. The following data gives a base summary statistics from the data, will revise and add a definition table as well. 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrrrr}
+\toprule
+  & Unique (\#) & Missing (\%) & Mean & SD & Min & Median & Max\\
+\midrule
+year & 21 & 0 & \num{2012.0} & \num{6.1} & \num{2002.0} & \num{2012.0} & \num{2022.0}\\
+round & 7 & 0 & \num{4.2} & \num{2.0} & \num{1.0} & \num{4.0} & \num{7.0}\\
+pick & 262 & 0 & \num{127.9} & \num{73.9} & \num{1.0} & \num{128.0} & \num{262.0}\\
+age & 10 & 4 & \num{22.5} & \num{0.9} & \num{20.0} & \num{23.0} & \num{28.0}\\
+allpro & 8 & 0 & \num{0.1} & \num{0.4} & \num{0.0} & \num{0.0} & \num{7.0}\\
+seasons\_started & 18 & 0 & \num{1.8} & \num{2.8} & \num{0.0} & \num{0.0} & \num{17.0}\\
+w\_av & 117 & 9 & \num{16.2} & \num{20.1} & \num{-4.0} & \num{8.0} & \num{163.0}\\
+dr\_av & 110 & 15 & \num{12.8} & \num{17.0} & \num{-4.0} & \num{6.0} & \num{163.0}\\
+games & 232 & 9 & \num{58.2} & \num{47.4} & \num{0.0} & \num{46.0} & \num{297.0}\\
+wt & 198 & 18 & \num{245.3} & \num{45.5} & \num{155.0} & \num{236.0} & \num{384.0}\\
+forty & 141 & 22 & \num{4.7} & \num{0.3} & \num{4.2} & \num{4.7} & \num{5.7}\\
+bench & 46 & 43 & \num{21.5} & \num{6.4} & \num{2.0} & \num{21.0} & \num{49.0}\\
+vertical & 53 & 35 & \num{33.3} & \num{4.2} & \num{20.5} & \num{33.5} & \num{46.0}\\
+broad\_jump & 58 & 36 & \num{115.6} & \num{9.3} & \num{83.0} & \num{117.0} & \num{147.0}\\
+cone & 197 & 48 & \num{7.2} & \num{0.4} & \num{6.4} & \num{7.2} & \num{9.0}\\
+shuttle & 140 & 47 & \num{4.4} & \num{0.3} & \num{3.8} & \num{4.3} & \num{5.2}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+
+\section{Empirical Methods}\label{sec:methods}
+While this paper covers both linear regression and tree models, the primary regression equations can be depicted in the following equation (this is subject to revision). 
+
+The following models regress some the athlete's age, position group (dummy variable created for each position), weight, 40-yard dash time, vertical jump height, broad jump distance, 3-cone time, and shuttle time on a selected dependent variable. Using a linear regression model where Y is the dependent variable and X is all independent variables, the following models are obtained:
+\begin{equation}
+\label{eq:1}
+Pick=\beta_{0} + \beta_{1}Age + \beta_{2}Position + \beta_{3}Weight + \beta_{4}Forty + \beta_{5}Vertical + \beta_{6}Broad + \beta_{7}Cone + \beta_{8}Shuttle + \varepsilon
+\label{eq:2}
+\end{equation}
+Where Pick is a discrete variable for the number overall an athlete is selected. 
+\begin{equation}
+\label{eq:2}
+Round=\beta_{0} + \beta_{1}Age + \beta_{2}Position + \beta_{3}Weight + \beta_{4}Forty + \beta_{5}Vertical + \beta_{6}Broad + \beta_{7}Cone + \beta_{8}Shuttle + \varepsilon    
+\end{equation}
+Where Round is a discrete variable for the round of the draft an athlete is selected.
+
+\begin{equation}
+\label{eq:3}
+Drafted=\beta_{0} + \beta_{1}Age + \beta_{2}Position + \beta_{3}Weight + \beta_{4}Forty + \beta_{5}Vertical + \beta_{6}Broad + \beta_{7}Cone + \beta_{8}Shuttle + \varepsilon
+\end{equation}
+Where Drafted is a dummy variable that equals 1 if the athlete was drafted and 0 if the athlete was not drafted. 
+
+
+\section{Research Findings}\label{sec:results}
+Here are some of the initial regression results for the first two equations. The tree model equations are still in progress and I am currently working on creating the full model. 
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+  & Model 1 & Model 2\\
+\midrule
+(Intercept) & \num{-665.372}*** & \num{-665.372}***\\
+ & (\num{100.889}) & (\num{100.889})\\
+age & \num{16.480}*** & \num{16.480}***\\
+ & (\num{1.653}) & (\num{1.653})\\
+posDE & \num{-1.748} & \num{-1.748}\\
+ & (\num{14.584}) & (\num{14.584})\\
+posT & \num{-0.681} & \num{-0.681}\\
+ & (\num{12.758}) & (\num{12.758})\\
+posDB & \num{29.603}** & \num{29.603}**\\
+ & (\num{10.121}) & (\num{10.121})\\
+posDT & \num{73.763}*** & \num{73.763}***\\
+ & (\num{21.057}) & (\num{21.057})\\
+posWR & \num{24.267}* & \num{24.267}*\\
+ & (\num{9.673}) & (\num{9.673})\\
+posTE & \num{54.429}** & \num{54.429}**\\
+ & (\num{16.573}) & (\num{16.573})\\
+posRB & \num{7.695} & \num{7.695}\\
+ & (\num{9.761}) & (\num{9.761})\\
+posLB & \num{35.988}+ & \num{35.988}+\\
+ & (\num{20.253}) & (\num{20.253})\\
+posC & \num{19.619}+ & \num{19.619}+\\
+ & (\num{10.922}) & (\num{10.922})\\
+posFB & \num{15.275} & \num{15.275}\\
+ & (\num{25.417}) & (\num{25.417})\\
+posP & \num{39.569}** & \num{39.569}**\\
+ & (\num{13.039}) & (\num{13.039})\\
+posNT & \num{30.140}+ & \num{30.140}+\\
+ & (\num{15.918}) & (\num{15.918})\\
+posOLB & \num{28.227} & \num{28.227}\\
+ & (\num{32.845}) & (\num{32.845})\\
+posCB & \num{31.053}* & \num{31.053}*\\
+ & (\num{12.371}) & (\num{12.371})\\
+posS & \num{8.338} & \num{8.338}\\
+ & (\num{16.982}) & (\num{16.982})\\
+posLS & \num{1.550} & \num{1.550}\\
+ & (\num{9.869}) & (\num{9.869})\\
+posSAF & \num{30.702}** & \num{30.702}**\\
+ & (\num{11.119}) & (\num{11.119})\\
+posOT & \num{16.286} & \num{16.286}\\
+ & (\num{12.865}) & (\num{12.865})\\
+wt & \num{-1.297}*** & \num{-1.297}***\\
+ & (\num{0.137}) & (\num{0.137})\\
+ht5-11 & \num{1.842} & \num{1.842}\\
+ & (\num{7.699}) & (\num{7.699})\\
+ht5-5 & \num{18.887} & \num{18.887}\\
+ & (\num{64.348}) & (\num{64.348})\\
+ht5-6 & \num{-26.478} & \num{-26.478}\\
+ & (\num{64.127}) & (\num{64.127})\\
+ht5-7 & \num{-20.242} & \num{-20.242}\\
+ & (\num{22.163}) & (\num{22.163})\\
+ht5-8 & \num{10.308} & \num{10.308}\\
+ & (\num{14.838}) & (\num{14.838})\\
+ht5-9 & \num{1.904} & \num{1.904}\\
+ & (\num{9.601}) & (\num{9.601})\\
+ht6-0 & \num{2.570} & \num{2.570}\\
+ & (\num{7.654}) & (\num{7.654})\\
+ht6-1 & \num{11.081} & \num{11.081}\\
+ & (\num{7.956}) & (\num{7.956})\\
+ht6-2 & \num{15.907}+ & \num{15.907}+\\
+ & (\num{8.491}) & (\num{8.491})\\
+ht6-3 & \num{11.570} & \num{11.570}\\
+ & (\num{8.886}) & (\num{8.886})\\
+ht6-4 & \num{11.103} & \num{11.103}\\
+ & (\num{9.418}) & (\num{9.418})\\
+ht6-5 & \num{11.310} & \num{11.310}\\
+ & (\num{10.053}) & (\num{10.053})\\
+ht6-6 & \num{15.558} & \num{15.558}\\
+ & (\num{11.101}) & (\num{11.101})\\
+ht6-7 & \num{-3.495} & \num{-3.495}\\
+ & (\num{13.899}) & (\num{13.899})\\
+ht6-8 & \num{6.120} & \num{6.120}\\
+ & (\num{18.077}) & (\num{18.077})\\
+ht6-9 & \num{-16.138} & \num{-16.138}\\
+ & (\num{64.642}) & (\num{64.642})\\
+forty & \num{130.880}*** & \num{130.880}***\\
+ & (\num{13.704}) & (\num{13.704})\\
+bench & \num{-0.529} & \num{-0.529}\\
+ & (\num{0.331}) & (\num{0.331})\\
+vertical & \num{-0.053} & \num{-0.053}\\
+ & (\num{0.616}) & (\num{0.616})\\
+broad\_jump & \num{-0.800}* & \num{-0.800}*\\
+ & (\num{0.327}) & (\num{0.327})\\
+cone & \num{21.352}** & \num{21.352}**\\
+ & (\num{7.980}) & (\num{7.980})\\
+shuttle & \num{8.845} & \num{8.845}\\
+ & (\num{11.423}) & (\num{11.423})\\
+\midrule
+Num.Obs. & \num{2045} & \num{2045}\\
+R2 & \num{0.174} & \num{0.174}\\
+R2 Adj. & \num{0.156} & \num{0.156}\\
+AIC & \num{22818.8} & \num{22818.8}\\
+BIC & \num{23066.2} & \num{23066.2}\\
+Log.Lik. & \num{-11365.407} & \num{-11365.407}\\
+RMSE & \num{62.72} & \num{62.72}\\
+\bottomrule
+\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\section{Conclusion}\label{sec:conclusion}
+
+\vfill
+\pagebreak{}
+\begin{spacing}{1.0}
+\bibliographystyle{jpe}
+\bibliography{References.bib}
+\addcontentsline{toc}{section}{References}
+\end{spacing}
+
+\vfill
+\pagebreak{}
+\clearpage
+
+
+\end{document}
